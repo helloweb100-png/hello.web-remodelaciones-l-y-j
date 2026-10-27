@@ -10,8 +10,8 @@
     <meta name="keywords" content="remodelaciones, remodelación de casas, pintura, electricista, plomería, tablaroca, carpintería, estuco, pisos, cotización de obra">
     <meta name="author" content="Remodelaciones Los 2 Amigos L y J">
     <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="theme-color" content="#0b0c0e">
-    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#ffd23f">
+    <meta name="color-scheme" content="light">
     <meta name="format-detection" content="telephone=yes">
     <!-- PRODUCCION: agregar <link rel="canonical" href="https://TU-DOMINIO.com/"> y og:url / og:image con URL absoluta -->
 
@@ -36,7 +36,7 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
     <!-- Favicon provisional (monograma LJ). Reemplazar por el logo definitivo cuando exista -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0c0e'/%3E%3Cpath d='M0 46h26v18H0z' fill='%23ea6a2b' opacity='0'/%3E%3Ctext x='32' y='45' font-family='Arial Narrow,Impact,sans-serif' font-weight='900' font-size='36' text-anchor='middle' fill='%23ea6a2b'%3ELJ%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231b1209'/%3E%3Ctext x='32' y='45' font-family='Arial Narrow,Impact,sans-serif' font-weight='900' font-size='36' text-anchor='middle' fill='%23ffd23f'%3ELJ%3C/text%3E%3C/svg%3E">
 
     <link rel="stylesheet" href="styles.css">
     <noscript><style>#loader{display:none!important}html.is-loading{overflow:auto!important}</style></noscript>
@@ -188,27 +188,27 @@
 <main id="main">
 
     <!-- =====================================================
-         HERO
+         HERO (portada alegre: paleta de pintura sobre amarillo sol)
          ===================================================== -->
     <section class="hero" id="inicio" aria-labelledby="hero-title">
         <div class="hero__bg" aria-hidden="true">
-            <div class="hero__grid"></div>
-            <div class="hero__aurora"><i></i><i></i><i></i></div>
+            <div class="hero__dots"></div>
+            <div class="hero__blobs"><i></i><i></i><i></i><i></i></div>
         </div>
 
         <div class="container hero__inner">
             <div class="hero__copy">
-                <p class="eyebrow hero__tag" data-hero="tag">Remodelaciones Los 2 Amigos L y J</p>
+                <p class="hero__tag" data-hero="tag"><i class="hero__tag-dot" aria-hidden="true"></i>Remodelaciones Los 2 Amigos L y J</p>
                 <h1 class="hero__title" id="hero-title">
                     <span class="sr-only">Remodelaciones en general: </span>
                     <span class="hl"><span class="hl__i" data-hero="line">Todo para</span></span>
-                    <span class="hl"><span class="hl__i" data-hero="line">tu <em class="hero__accent">proyecto.<i class="hero__underline" aria-hidden="true"></i></em></span></span>
+                    <span class="hl"><span class="hl__i" data-hero="line">tu <em class="hero__accent">proyecto.</em></span></span>
                 </h1>
                 <p class="hero__lead" data-hero="fade">Pintura, electricidad, plomería, tablaroca, carpintería y estuco con un solo equipo. Tú lo imaginas, nosotros lo construimos.</p>
                 <div class="hero__cta" data-hero="fade">
                     <a class="btn btn--primary btn--lg btn--sheen" href="#contacto" data-magnetic>
                         Quiero mi cotización
-                        <svg class="ico" aria-hidden="true"><use href="#i-arrow-ur"/></svg>
+                        <span class="btn__orb" aria-hidden="true"><svg class="ico"><use href="#i-arrow-ur"/></svg></span>
                     </a>
                     <a class="btn btn--ghost btn--lg" href="#obras">Ver obra real</a>
                 </div>
@@ -218,11 +218,6 @@
                 <div class="portal" id="portal">
                     <video class="portal__video" muted loop playsinline preload="metadata" disablepictureinpicture
                            poster="media/poster/clip-pintura-pistola.jpg" data-vsrc="media/video/clip-pintura-pistola.mp4" data-eager></video>
-                    <span class="portal__laser"></span>
-                    <span class="portal__corner portal__corner--tl"></span>
-                    <span class="portal__corner portal__corner--tr"></span>
-                    <span class="portal__corner portal__corner--bl"></span>
-                    <span class="portal__corner portal__corner--br"></span>
                 </div>
                 <img class="float float--a" src="media/obra/casa-juegos-rosa.jpg" width="720" height="1280" alt="" decoding="async">
                 <img class="float float--b" src="media/obra/regadera-piso-porcelanato.jpg" width="960" height="1280" alt="" decoding="async">
@@ -233,6 +228,12 @@
                     </svg>
                     <svg class="ico badge__ico"><use href="#i-hardhat"/></svg>
                 </div>
+                <div class="burst">
+                    <div class="burst__in">
+                        <svg class="burst__shape" viewBox="0 0 100 100"><polygon points="50.0,2.0 58.0,9.8 68.4,5.7 72.8,15.9 83.9,16.1 84.1,27.2 94.3,31.6 90.2,42.0 98.0,50.0 90.2,58.0 94.3,68.4 84.1,72.8 83.9,83.9 72.8,84.1 68.4,94.3 58.0,90.2 50.0,98.0 42.0,90.2 31.6,94.3 27.2,84.1 16.1,83.9 15.9,72.8 5.7,68.4 9.8,58.0 2.0,50.0 9.8,42.0 5.7,31.6 15.9,27.2 16.1,16.1 27.2,15.9 31.6,5.7 42.0,9.8"/></svg>
+                        <p class="burst__txt"><b>7</b><span>oficios</span></p>
+                    </div>
+                </div>
             </div>
         </div>
         <canvas class="hero__fx" id="fx" aria-hidden="true"></canvas>
@@ -241,7 +242,7 @@
     <!-- =====================================================
          MARQUEE (unico del sitio): los 7 oficios
          ===================================================== -->
-    <section class="marquee" aria-label="Oficios que cubrimos">
+    <section class="marquee tone-ink" aria-label="Oficios que cubrimos">
         <div class="marquee__track" aria-hidden="true">
             <div class="marquee__group">
                 <span class="mi">Pintura</span><svg class="ico mi__sep"><use href="#i-spark"/></svg>
@@ -267,7 +268,7 @@
     <!-- =====================================================
          MANIFIESTO + cifras
          ===================================================== -->
-    <section class="manifesto theme-light sheet-t sheet-b" id="nosotros" aria-labelledby="mf-title">
+    <section class="manifesto theme-light tone-cream sheet-t sheet-b" id="nosotros" aria-labelledby="mf-title">
         <div class="container">
             <h2 class="sr-only" id="mf-title">Quiénes somos</h2>
             <p class="manifesto__text" data-words>Somos dos amigos con un mismo oficio: <mark>dejar tu espacio mejor de como lo encontramos.</mark> Un solo equipo para pintura, electricidad, plomería y todo lo demás, sin perseguir a un contratista distinto para cada trabajo.</p>
@@ -292,7 +293,7 @@
     <!-- =====================================================
          EXPAND: la ventana se abre con el scroll
          ===================================================== -->
-    <section class="expand" id="obra-real" aria-labelledby="ex-title">
+    <section class="expand tone-pink" id="obra-real" aria-labelledby="ex-title">
         <h2 class="expand__title" id="ex-title"><span data-ex="l">Obra</span><span data-ex="r">real</span></h2>
 
         <div class="expand__window" id="ex-window">
@@ -328,7 +329,7 @@
     <!-- =====================================================
          SERVICIOS: pila sticky
          ===================================================== -->
-    <section class="services" id="servicios" aria-labelledby="sv-title">
+    <section class="services tone-ink" id="servicios" aria-labelledby="sv-title">
         <div class="container">
             <header class="sec-head">
                 <p class="eyebrow">Servicios</p>
@@ -455,7 +456,7 @@
     <!-- =====================================================
          OBRAS: galeria con pan horizontal
          ===================================================== -->
-    <section class="work theme-light sheet-t" id="obras" aria-labelledby="wk-title">
+    <section class="work theme-light tone-mint sheet-t sheet-b" id="obras" aria-labelledby="wk-title">
         <div class="work__pin" id="work-pin">
             <header class="work__head container">
                 <h2 class="sec-title" id="wk-title" data-split>Así se ve el trabajo bien hecho.</h2>
@@ -521,7 +522,7 @@
     <!-- =====================================================
          PROCESO: linea que se dibuja con el scroll
          ===================================================== -->
-    <section class="process theme-light sheet-b" id="proceso" aria-labelledby="pr-title">
+    <section class="process theme-light tone-sun sheet-t sheet-b" id="proceso" aria-labelledby="pr-title">
         <div class="container">
             <header class="sec-head">
                 <h2 class="sec-title" id="pr-title" data-split>Así de simple empezamos.</h2>
@@ -565,7 +566,7 @@
     <!-- =====================================================
          POR QUE NOSOTROS: bento (5 piezas, 5 celdas)
          ===================================================== -->
-    <section class="why" id="por-que" aria-labelledby="wy-title">
+    <section class="why theme-light tone-cream sheet-t sheet-b" id="por-que" aria-labelledby="wy-title">
         <div class="container">
             <header class="sec-head">
                 <h2 class="sec-title" id="wy-title" data-split>Hecho con oficio, entregado con orden.</h2>
@@ -622,7 +623,7 @@
     <!-- =====================================================
          PREGUNTAS
          ===================================================== -->
-    <section class="faq theme-light sheet-t sheet-b" id="preguntas" aria-labelledby="fq-title">
+    <section class="faq theme-light tone-blue sheet-t sheet-b" id="preguntas" aria-labelledby="fq-title">
         <div class="container faq__grid">
             <header class="faq__head">
                 <p class="eyebrow">Preguntas</p>
@@ -665,7 +666,7 @@
     <!-- =====================================================
          CONTACTO: CTA final + formulario hacia WhatsApp
          ===================================================== -->
-    <section class="contact" id="contacto" aria-labelledby="ct-title">
+    <section class="contact theme-light tone-violet sheet-t sheet-b" id="contacto" aria-labelledby="ct-title">
         <div class="contact__bg" aria-hidden="true"><i></i><i></i></div>
         <div class="container contact__grid">
             <div class="contact__copy">
@@ -743,7 +744,7 @@
 </main>
 
 <!-- ===== FOOTER ===== -->
-<footer class="footer">
+<footer class="footer tone-ink">
     <div class="container">
         <p class="footer__word" aria-hidden="true" data-text="Los 2 Amigos">Los 2 Amigos</p>
 

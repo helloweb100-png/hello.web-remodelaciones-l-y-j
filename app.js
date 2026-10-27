@@ -222,27 +222,6 @@
 
     }
 
-    // El nav cambia a tema claro cuando cruza una seccion .theme-light (banda de 1px a la altura del nav)
-    function initNavTheme() {
-        const sections = $$('.theme-light');
-        if (!sections.length || !('IntersectionObserver' in window) || !nav) return;
-        let io = null;
-        const active = new Set();
-        const build = () => {
-            if (io) io.disconnect();
-            active.clear();
-            const top = Math.round(navHeight() / 2);
-            io = new IntersectionObserver((entries) => {
-                entries.forEach((e) => (e.isIntersecting ? active.add(e.target) : active.delete(e.target)));
-                nav.classList.toggle('on-light', active.size > 0);
-            }, { rootMargin: '-' + top + 'px 0px -' + Math.max(0, window.innerHeight - top - 1) + 'px 0px', threshold: 0 });
-            sections.forEach((s) => io.observe(s));
-        };
-        build();
-        let t = 0;
-        window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 250); });
-    }
-
     // Triggers de scroll del nav: se crean DESPUES de las escenas con pin para medir bien
     function initNavScroll() {
         const bar = $('#progress');
@@ -287,7 +266,7 @@
     }
 
     /* ======================================================================
-       5. HERO: particulas, parallax con puntero y entrada
+       5. HERO: confeti de colores, parallax con puntero y entrada
        ====================================================================== */
     function initHeroFX() {
         const canvas = $('#fx');
@@ -295,17 +274,31 @@
         if (!canvas || !hero) return;
         const ctx = canvas.getContext('2d');
 
-        let W = 0, H = 0, particles = [];
+        const copy = $('.hero__copy');
+        let W = 0, H = 0, particles = [], safe = null, frame = 0;
         let raf = 0, visible = true;
         const pointer = { x: -9999, y: -9999 };
         const rnd = (a, b) => a + Math.random() * (b - a);
 
-        const make = () => ({
-            x: rnd(0, W), y: rnd(0, H),
-            vx: rnd(-0.12, 0.12), vy: rnd(-0.42, -0.07),
-            r: rnd(0.7, 2.2), a: rnd(0.25, 0.85), t: rnd(0, 6.28),
-            warm: Math.random() < 0.72,
-        });
+        // Colores de la paleta de pintura (r,g,b). La tinta va con poca opacidad.
+        const COLORS = ['255,92,154', '76,201,240', '61,219,167', '255,255,255', '255,138,61', '27,18,9'];
+        const make = () => {
+            const c = COLORS[Math.floor(rnd(0, COLORS.length))];
+            return {
+                x: rnd(0, W), y: rnd(0, H),
+                vx: rnd(-0.18, 0.18), vy: rnd(-0.5, -0.12),
+                r: rnd(3, 7.5), a: rnd(0.6, 0.95), t: rnd(0, 6.28), spin: rnd(-0.025, 0.025),
+                shape: Math.floor(rnd(0, 3)), // 0 circulo, 1 cuadrito, 2 cruz
+                c, k: c === '27,18,9' ? 0.4 : 1,
+            };
+        };
+
+        // Zona del texto: ahi el confeti se atenua para no estorbar la lectura
+        const measure = () => {
+            if (!copy) return;
+            const c = copy.getBoundingClientRect(), r = canvas.getBoundingClientRect();
+            safe = { x1: c.left - r.left - 12, y1: c.top - r.top - 12, x2: c.right - r.left + 12, y2: c.bottom - r.top + 12 };
+        };
 
         const resize = () => {
             const rect = canvas.getBoundingClientRect();
@@ -314,52 +307,52 @@
             canvas.width = Math.round(W * dpr);
             canvas.height = Math.round(H * dpr);
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            const count = Math.round(clamp((W * H) / 14000, 34, 110));
+            const count = Math.round(clamp((W * H) / 20000, 20, 60));
             particles = Array.from({ length: count }, make);
+            measure();
         };
 
-        const LINK = 118;
         const draw = (animate) => {
             ctx.clearRect(0, 0, W, H);
             for (let i = 0; i < particles.length; i++) {
                 const p = particles[i];
                 if (animate) {
-                    p.x += p.vx; p.y += p.vy; p.t += 0.02;
-                    if (p.y < -10) { p.y = H + 10; p.x = rnd(0, W); }
-                    if (p.x < -10) p.x = W + 10;
-                    if (p.x > W + 10) p.x = -10;
+                    p.x += p.vx; p.y += p.vy; p.t += p.spin;
+                    if (p.y < -12) { p.y = H + 12; p.x = rnd(0, W); }
+                    if (p.x < -12) p.x = W + 12;
+                    if (p.x > W + 12) p.x = -12;
                     const dx = p.x - pointer.x, dy = p.y - pointer.y;
                     const d2 = dx * dx + dy * dy;
-                    if (d2 < 24000) { const f = (1 - d2 / 24000) * 1.4; p.x += (dx / Math.sqrt(d2 + 1)) * f; p.y += (dy / Math.sqrt(d2 + 1)) * f; }
+                    if (d2 < 24000) { const f = (1 - d2 / 24000) * 1.8; p.x += (dx / Math.sqrt(d2 + 1)) * f; p.y += (dy / Math.sqrt(d2 + 1)) * f; }
                 }
-                const a = p.a * (0.62 + 0.38 * Math.sin(p.t));
-                ctx.fillStyle = p.warm ? 'rgba(255,138,77,' + a.toFixed(3) + ')' : 'rgba(236,238,240,' + (a * 0.7).toFixed(3) + ')';
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const q = particles[j];
-                    const dx = p.x - q.x, dy = p.y - q.y;
-                    const d = dx * dx + dy * dy;
-                    if (d < LINK * LINK) {
-                        const al = (1 - Math.sqrt(d) / LINK) * 0.17;
-                        ctx.strokeStyle = 'rgba(234,106,43,' + al.toFixed(3) + ')';
-                        ctx.lineWidth = 0.8;
-                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+                const calm = safe && p.x > safe.x1 && p.x < safe.x2 && p.y > safe.y1 && p.y < safe.y2 ? 0.3 : 1;
+                const col = 'rgba(' + p.c + ',' + (p.a * p.k * calm).toFixed(3) + ')';
+                ctx.fillStyle = col;
+                ctx.strokeStyle = col;
+                if (p.shape === 0) {
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+                } else {
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.t * 8);
+                    if (p.shape === 1) {
+                        ctx.fillRect(-p.r, -p.r, p.r * 2, p.r * 2);
+                    } else {
+                        ctx.lineWidth = Math.max(2, p.r * 0.55);
+                        ctx.lineCap = 'round';
+                        ctx.beginPath();
+                        ctx.moveTo(-p.r, 0); ctx.lineTo(p.r, 0);
+                        ctx.moveTo(0, -p.r); ctx.lineTo(0, p.r);
+                        ctx.stroke();
                     }
-                }
-                // constelacion hacia el puntero
-                const px = p.x - pointer.x, py = p.y - pointer.y;
-                const pd = px * px + py * py;
-                if (pd < 150 * 150) {
-                    ctx.strokeStyle = 'rgba(255,138,77,' + ((1 - Math.sqrt(pd) / 150) * 0.4).toFixed(3) + ')';
-                    ctx.lineWidth = 1;
-                    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(pointer.x, pointer.y); ctx.stroke();
+                    ctx.restore();
                 }
             }
         };
 
         const loop = () => {
             if (!visible || document.hidden) { raf = 0; return; }
+            if (++frame % 120 === 0) measure();
             draw(true);
             raf = requestAnimationFrame(loop);
         };
@@ -418,9 +411,10 @@
             .to('[data-hero="line"]', { yPercent: 0, duration: 1.4, stagger: 0.13 }, 0.15)
             .to('[data-hero="fade"]', { y: 0, autoAlpha: 1, duration: 1.1, stagger: 0.14 }, 0.55)
             .to('.hero__media', { autoAlpha: 1, duration: 1.6, ease: 'power2.out' }, 0.2)
-            .to('.portal', { clipPath: 'inset(0% 0% 0% 0% round 24px)', duration: 1.7, ease: 'expo.inOut' }, 0.2)
-            .to('.float', { autoAlpha: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, stagger: 0.18, ease: 'power3.out' }, 1.0)
+            .to('.portal', { clipPath: 'inset(-4% -4% -4% -4% round 28px)', duration: 1.7, ease: 'expo.inOut' }, 0.2)
+            .to('.float', { autoAlpha: 1, clipPath: 'inset(-6% -6% -6% -6%)', duration: 1.3, stagger: 0.18, ease: 'power3.out' }, 1.0)
             .to('.badge', { autoAlpha: 1, scale: 1, rotate: 0, duration: 1.3, ease: 'back.out(1.5)' }, 1.15)
+            .to('.burst', { autoAlpha: 1, scale: 1, rotate: 0, duration: 1.3, ease: 'back.out(1.8)' }, 1.4)
             .to(nav, { yPercent: 0, autoAlpha: 1, duration: 1.1 }, 0.35)
             .add(() => { $('.hero').classList.add('is-live'); gsap.set(['.portal', '.float'], { clearProps: 'clipPath' }); }, 2.4);
         return tl;
@@ -432,9 +426,10 @@
         gsap.set('[data-hero="line"]', { yPercent: 118 });
         gsap.set('[data-hero="fade"]', { y: 30, autoAlpha: 0 });
         gsap.set('.hero__media', { autoAlpha: 0 });
-        gsap.set('.portal', { clipPath: 'inset(100% 0% 0% 0% round 24px)' });
-        gsap.set('.float', { autoAlpha: 0, clipPath: 'inset(100% 0% 0% 0%)' });
+        gsap.set('.portal', { clipPath: 'inset(100% -4% -4% -4% round 28px)' });
+        gsap.set('.float', { autoAlpha: 0, clipPath: 'inset(100% -6% -6% -6%)' });
         gsap.set('.badge', { autoAlpha: 0, scale: 0.4, rotate: -90 });
+        gsap.set('.burst', { autoAlpha: 0, scale: 0.3, rotate: -50 });
         gsap.set(nav, { yPercent: -100, autoAlpha: 0 });
     }
 
@@ -892,7 +887,6 @@
         initMagnetic();
         if (hasGSAP && !reduced) initScenes();
         initNavScroll();
-        initNavTheme();
         initSpirit();
 
         loaded.then(() => {
